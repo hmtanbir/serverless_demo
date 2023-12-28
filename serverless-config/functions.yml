@@ -1,0 +1,10 @@
+# test function
+hello:
+  handler: src/handler/handler.hello
+  events:
+    - http:
+        path: /api/sample/hello
+        method: POST
+        cors:
+          origin: "*"
+#        private: true

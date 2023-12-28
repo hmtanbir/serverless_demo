@@ -1,0 +1,8 @@
+.serverless
+.idea
+node_modules
+test
+.webpack
+.vscode
+yarn.lock
+yarn-error.log
