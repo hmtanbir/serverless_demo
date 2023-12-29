@@ -100,3 +100,49 @@ deleteProduct:
       method: DELETE
       cors:
        origin: "*"
+
+# routes for order API
+getAllOrders:
+ handler: src/handler/order.getAllOrder
+ events:
+  - http:
+      path: /api/v1/orders
+      method: GET
+      cors:
+       origin: "*"
+
+getOrder:
+ handler: src/handler/order.getOrder
+ events:
+  - http:
+      path: /api/v1/orders/{id}
+      method: GET
+      cors:
+       origin: "*"
+
+creatOrder:
+ handler: src/handler/order.createOrder
+ events:
+  - http:
+      path: /api/v1/orders
+      method: POST
+      cors:
+       origin: "*"
+
+updateOrder:
+ handler: src/handler/order.updateOrder
+ events:
+  - http:
+      path: /api/v1/orders/{id}
+      method: PUT
+      cors:
+       origin: "*"
+
+deleteOrder:
+ handler: src/handler/order.deleteOrder
+ events:
+  - http:
+      path: /api/v1/orders/{id}
+      method: DELETE
+      cors:
+       origin: "*"
