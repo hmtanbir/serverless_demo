@@ -3,8 +3,53 @@ hello:
   handler: src/handler/handler.hello
   events:
     - http:
-        path: /api/sample/hello
+        path: /api/hello
         method: POST
         cors:
           origin: "*"
 #        private: true
+
+getAllUser:
+ handler: src/handler/user.getAllUsers
+ events:
+  - http:
+      path: /api/v1/users
+      method: GET
+      cors:
+       origin: "*"
+
+getUser:
+ handler: src/handler/user.getUser
+ events:
+  - http:
+      path: /api/v1/users/{id}
+      method: GET
+      cors:
+       origin: "*"
+
+creatUser:
+ handler: src/handler/user.createUser
+ events:
+  - http:
+      path: /api/v1/users
+      method: POST
+      cors:
+       origin: "*"
+
+updateUser:
+ handler: src/handler/user.updateUser
+ events:
+  - http:
+      path: /api/v1/users/{id}
+      method: PUT
+      cors:
+       origin: "*"
+
+deleteUser:
+ handler: src/handler/user.deleteUser
+ events:
+  - http:
+      path: /api/v1/users/{id}
+      method: DELETE
+      cors:
+       origin: "*"
