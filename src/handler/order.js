@@ -1,13 +1,19 @@
 import {apiResponse, apiError} from "../utils/helpers"
-import {log} from '../utils/helpers'
+import {log, checkAuth} from '../utils/helpers'
 import {AppConfig} from '../utils/config'
 import Order from '../models/order.mjs'
 import mongoose from "mongoose";
 
 // getAllOrder
 // curl --location --request GET 'http://localhost:3000/dev/api/v1/orders'
-export const getAllOrder = async () => {
+export const getAllOrder = async (record) => {
     log.debug("getAllOrder");
+    log.debug("checking authorization");
+    const authResult = checkAuth(record);
+    if (authResult) {
+      return authResult;
+    }
+
     try {
 
         // connect to mongodb
@@ -37,6 +43,13 @@ export const getAllOrder = async () => {
 // curl --location --request GET 'http://localhost:3000/dev/api/v1/orders/121313091029'
 export const getOrder= async (record) => {
     log.debug("getOrder");
+    log.debug("checking authorization");
+
+    const authResult = checkAuth(record);
+    if (authResult) {
+      return authResult;
+    }
+
     try {
 
         // connect to mongodb
@@ -70,14 +83,20 @@ export const getOrder= async (record) => {
 // --header 'Content-Type: application/json' \
 // --data-raw '{
 //     "body": {
-//         "name": "Soap",
-//         "description": "Lifebiy",
-//         "price": 10",
-//         "quantity": 100
+//         "user": "658fbf14ac09ffc5ebdec8f0",
+//         "products": ["658ef27f9c4161fdd42b3f5d", "658fd0fbfb7c40b800d481df"],
+//         "totalAmount": 100
 //         }
 //     }'
 export const createOrder = async (record) => {
     log.debug("createOrder");
+    log.debug("checking authorization");
+    
+    const authResult = checkAuth(record);
+    if (authResult) {
+      return authResult;
+    }
+
     let recordObj = JSON.parse(record["body"]);
     log.debug(`recordObj: ${JSON.stringify(recordObj)}`);
     try {
@@ -112,14 +131,20 @@ export const createOrder = async (record) => {
 // --header 'Content-Type: application/json' \
 // --data-raw '{
 //     "body": {
-//         "name": "Soap",
-//         "description": "Lifebiy",
-//         "price": 10",
-//         "quantity": 100
+//         "user": "658fbf14ac09ffc5ebdec8f0",
+//         "products": ["658ef27f9c4161fdd42b3f5d", "658fd0fbfb7c40b800d481df"],
+//         "totalAmount": 1010.00
 //         }
 //     }'
 export const updateOrder = async (record) => {
     log.debug("updateOrder");
+
+    log.debug("checking authorization");
+    const authResult = checkAuth(record);
+    if (authResult) {
+      return authResult;
+    }
+
     let recordObj = JSON.parse(record["body"]);
     log.debug(`recordObj: ${JSON.stringify(recordObj)}`);
     
@@ -156,6 +181,12 @@ export const updateOrder = async (record) => {
 // --header 'Content-Type: application/json' \
 export const deleteOrder = async (record) => {
     log.debug("deleteOrder");
+    log.debug("checking authorization");
+    const authResult = checkAuth(record);
+    if (authResult) {
+      return authResult;
+    }
+
     let recordObj = JSON.parse(record["body"]);
     log.debug(`recordObj: ${JSON.stringify(recordObj)}`);
     try {

@@ -1,13 +1,20 @@
 import {apiResponse, apiError} from "../utils/helpers"
-import {log} from '../utils/helpers'
+import {log, checkAuth} from '../utils/helpers'
 import {AppConfig} from '../utils/config'
 import Product from '../models/product.mjs'
 import mongoose from "mongoose";
 
 // getAllProducts
 // curl --location --request GET 'http://localhost:3000/dev/api/v1/products'
-export const getAllProducts = async () => {
+export const getAllProducts = async (record) => {
     log.debug("getAllProducts");
+
+    log.debug("checking authorization");
+    const authResult = checkAuth(record);
+      if (authResult) {
+        return authResult;
+      }
+
     try {
 
         // connect to mongodb
@@ -37,6 +44,13 @@ export const getAllProducts = async () => {
 // curl --location --request GET 'http://localhost:3000/dev/api/v1/products/121313091029'
 export const getProduct= async (record) => {
     log.debug("getProduct");
+    
+    log.debug("checking authorization");
+    const authResult = checkAuth(record);
+      if (authResult) {
+        return authResult;
+      }
+    
     try {
 
         // connect to mongodb
@@ -78,6 +92,13 @@ export const getProduct= async (record) => {
 //     }'
 export const createProduct = async (record) => {
     log.debug("createProduct");
+
+    log.debug("checking authorization");
+    const authResult = checkAuth(record);
+      if (authResult) {
+        return authResult;
+      }
+
     let recordObj = JSON.parse(record["body"]);
     log.debug(`recordObj: ${JSON.stringify(recordObj)}`);
     try {
@@ -120,6 +141,13 @@ export const createProduct = async (record) => {
 //     }'
 export const updateProduct = async (record) => {
     log.debug("updateProduct");
+
+    log.debug("checking authorization");
+    const authResult = checkAuth(record);
+    if (authResult) {
+      return authResult;
+    }
+
     let recordObj = JSON.parse(record["body"]);
     log.debug(`recordObj: ${JSON.stringify(recordObj)}`);
     
@@ -156,6 +184,13 @@ export const updateProduct = async (record) => {
 // --header 'Content-Type: application/json' \
 export const deleteProduct = async (record) => {
     log.debug("deleteProduct");
+    
+    log.debug("checking authorization");
+    const authResult = checkAuth(record);
+    if (authResult) {
+      return authResult;
+    }
+
     let recordObj = JSON.parse(record["body"]);
     log.debug(`recordObj: ${JSON.stringify(recordObj)}`);
     try {

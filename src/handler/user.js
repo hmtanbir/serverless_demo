@@ -1,13 +1,20 @@
 import {apiResponse, apiError} from "../utils/helpers"
-import {log} from '../utils/helpers'
+import {log, checkAuth} from '../utils/helpers'
 import {AppConfig} from '../utils/config'
 import User from '../models/user.mjs'
 import mongoose from "mongoose";
+// import bcrypt from 'bcrypt';
 
 // getAllUsers
 // curl --location --request GET 'http://localhost:3000/dev/api/v1/users'
-export const getAllUsers = async () => {
+export const getAllUsers = async (record) => {
     log.debug("getAllUser");
+    log.debug("checking authorization");
+    const authResult = checkAuth(record);
+    if (authResult) {
+      return authResult;
+    }
+
     try {
 
         // connect to mongodb
@@ -37,6 +44,12 @@ export const getAllUsers = async () => {
 // curl --location --request GET 'http://localhost:3000/dev/api/v1/users/121313091029'
 export const getUser = async (record) => {
     log.debug("getUser");
+    log.debug("checking authorization");
+    const authResult = checkAuth(record);
+    if (authResult) {
+      return authResult;
+    }
+
     try {
 
         // connect to mongodb
@@ -91,6 +104,10 @@ export const createUser = async (record) => {
         const isConnected = mongoose.connection.readyState;
         if (isConnected !== 1) return apiError(400, {status: "failed", statusCode: 400, message: "database is not connected", data: []});
         log.debug("connected to mongodb");
+
+        // Hash the password
+        // const hashedPassword = await bcrypt.hash(recordObj.password, 10); // 10 is the number of salt rounds
+        // recordObj.password = hashedPassword;
 
         // save the record
         let queryData = await User.create(recordObj);
@@ -155,6 +172,12 @@ export const updateUser = async (record) => {
 // --header 'Content-Type: application/json' \
 export const deleteUser = async (record) => {
     log.debug("deleteUser");
+    log.debug("checking authorization");
+    const authResult = checkAuth(record);
+    if (authResult) {
+      return authResult;
+    }
+
     let recordObj = JSON.parse(record["body"]);
     log.debug(`recordObj: ${JSON.stringify(recordObj)}`);
     try {

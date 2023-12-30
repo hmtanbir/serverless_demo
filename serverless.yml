@@ -1,5 +1,5 @@
-app: PROJECT_NM
-service: PROJECT_NM
+app: Demo
+service: Demo
 useDotenv: true
 frameworkVersion: ">=1.1.0 <3.0.0"
 
@@ -54,5 +54,4 @@ provider:
   # iamRoleStatements: ${file(./serverless-config/roles.yml)}
 
 functions: ${file(./serverless-config/functions.yml)}
-resources:
   # Resources: ${file(./serverless-config/dbresources.yml)}

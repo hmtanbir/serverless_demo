@@ -2,6 +2,7 @@
 import mongoose from 'mongoose'
 import pino from 'pino'
 import {AppConfig} from './config'
+import jwt from "jsonwebtoken"
 
 let connection = null
 
@@ -61,3 +62,27 @@ export const log = pino({
     level: process.env.LOG_LEVEL || 'debug',
     prettyPrint: process.env.NODE_ENV !== 'production' || process.env.LOG_PRETTY_PRINT === 'true',
 })
+
+export const checkAuth = (record) => {
+    try {
+        // Extract the authorization header
+        const authorizationHeader = record.headers["Authorization"];
+        const jwtSecret = "SNR_DEMO";
+
+        if (!authorizationHeader) {
+            return { statusCode: 401, body: JSON.stringify({ message: 'Unauthorized, token is required' }) };
+        }
+
+        // Extract and decode the token
+        const token = authorizationHeader.split(' ')[1];
+        log.debug(`"token:" ${token}`);
+        jwt.verify(token, jwtSecret);
+        log.debug("token matched");
+
+        // Continue processing
+        return null;
+    } catch (e) {
+        log.debug('Error during authentication:', `${e}`);
+        return { statusCode: 401, body: JSON.stringify({ message: 'unauthorized' }) };
+    }
+};

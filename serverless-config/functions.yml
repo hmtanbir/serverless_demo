@@ -146,3 +146,12 @@ deleteOrder:
       method: DELETE
       cors:
        origin: "*"
+
+createLogin:
+ handler: src/handler/login.createLogin
+ events:
+  - http:
+      path: /api/v1/login
+      method: POST
+      cors:
+       origin: "*"
